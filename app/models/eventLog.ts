@@ -12,10 +12,6 @@ export default class EventLog {
     private buffer: string;
     private matchLine: string[];
     public bufferSize: number;
-
-    get pos(): number {
-        return this.cousor - this.offset;
-    }
     
     constructor(filename: string, bufferSize: number=defaultBufferSize) {
         this.filename = filename;
@@ -28,12 +24,16 @@ export default class EventLog {
         this.bufferSize = bufferSize;
     }
 
-    moveCursor(num = -1): void{
-        this.cousor += num
+    get pos(): number {
+        return this.cousor - this.offset;
     }
 
     getChar(): string {
         return this.buffer.charAt(this.pos);
+    }
+
+    moveCursor(num = -1): void{
+        this.cousor += num
     }
 
     trim(): void{
