@@ -26,3 +26,8 @@ npm test
 ```
 npx ts-node tools/benchmark.ts
 ```
+
+#### Help to reformant code
+```
+npx eslint .
+```

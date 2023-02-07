@@ -1,8 +1,7 @@
 import fs from 'fs'
 import  EventLog  from '../../../app/models/eventLog'
-const tmp = require('tmp');
-//import tmp from 'tmp';
 
+const tmp = require('tmp');
 let tempObj: any
 
 beforeEach(() => {
@@ -129,27 +128,3 @@ test("EventLog.search empty", () => {
     const events = eventLog.search(["test"])
     expect(events).toStrictEqual([]);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-const defaultBufferSize: number = 16;
-const defaultFindEventNum: number = 5;
+const defaultBufferSize = 16;
+const defaultFindEventNum = 5;
 
 export default class EventLog {
     private filename: string; 
@@ -28,7 +28,7 @@ export default class EventLog {
         this.bufferSize = bufferSize;
     }
 
-    moveCursor(num: number = -1): void{
+    moveCursor(num = -1): void{
         this.cousor += num
     }
 
@@ -51,7 +51,7 @@ export default class EventLog {
         }
         
         this.offset -= num;
-        let buf = Buffer.alloc(num);
+        const buf = Buffer.alloc(num);
         fs.readSync(this.fileDiscriptor, buf, 0, num, this.offset)
         this.buffer = buf.toString() + this.buffer;
         return true;
@@ -119,7 +119,7 @@ export default class EventLog {
 
                     if (line.charAt(line.length-1) == "\n") {
                         line = line.slice(0,-1);
-                    };
+                    }
                     
                     this.matchLine.push(line);
                     this.trim();
