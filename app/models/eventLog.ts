@@ -4,13 +4,13 @@ const defaultBufferSize = 16;
 const defaultFindEventNum = 5;
 
 export default class EventLog {
-    private filename: string; 
-    private fileDiscriptor: number;
+    readonly filename: string; 
+    readonly fileDiscriptor: number;
     private offset: number;
     private stat: fs.Stats;
     private cousor: number;
     private buffer: string;
-    private matchLine: string[];
+    public matchLine: string[];
     public bufferSize: number;
     
     constructor(filename: string, bufferSize: number=defaultBufferSize) {
@@ -70,7 +70,7 @@ export default class EventLog {
         return true;
     }
 
-    search(keyWords: string[], limit: number = defaultFindEventNum) {
+    search(keyWords: string[], limit: number = defaultFindEventNum): (string[]) {
         // TODO (sakaijunsoccer) Implement AND search with mulitple keywords. Use one keyword for now.
         const keyWord = keyWords[0].trim();
         const lenKeyWord = keyWord.length;
@@ -130,4 +130,5 @@ export default class EventLog {
         }
         return this.matchLine
     }
+
 }
