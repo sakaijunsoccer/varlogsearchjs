@@ -23,5 +23,4 @@ export const registor = ( app: express.Application ) => {
         const events = eventLog.search(keywordsList, limit)
         response.json({ events: events})
     } );
-
 };
