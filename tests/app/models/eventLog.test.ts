@@ -6,7 +6,6 @@ let tempObj: any
 
 beforeEach(() => {
     tempObj = tmp.fileSync();
-    console.log('File: ', tempObj.name);
 });
 
 afterEach(() => {

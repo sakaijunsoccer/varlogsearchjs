@@ -11,6 +11,10 @@ $ nvm install 18.12.1
 $ npm --version
 8.19.2
 ```
+Run local
+```
+npm run dev
+```
 
 #### Install package
 ```
@@ -20,6 +24,11 @@ $ npm install
 #### Test
 ```
 npm test
+```
+
+#### Run
+```
+npm start
 ```
 
 #### Run benchmark
