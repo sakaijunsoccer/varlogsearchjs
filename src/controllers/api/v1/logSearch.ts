@@ -1,8 +1,9 @@
-
 import * as express from "express";
 import fs from 'fs';
-import EventLog from "../../../models/eventLog"
 import path from "path"
+
+import EventLog from "../../../models/eventLog"
+
 
 const defaultSearchLogLine = 5;
 const pathVarLog = '/var/log';

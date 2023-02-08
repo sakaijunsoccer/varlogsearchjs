@@ -45,6 +45,9 @@ npx ts-node bin/benchmark.ts
 npx eslint .
 ```
 
-#### Tools
+#### API
+Swagger API
+http://localhost:8080/docs/api/v1/
+
 Example of postman config for using API
 https://github.com/sakaijunsoccer/varlogsearchjs/blob/main/tools/varlogsearch.postman_collection.json
