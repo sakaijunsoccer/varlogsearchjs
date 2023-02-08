@@ -18,14 +18,6 @@ const benchmarkEventLog = (filename: string, keyword: string, limit: number) => 
     const end2 = (new Date()).getTime() / 1000;
     console.log(`time: ${end2 - start2} found: ${results2.length} buffer size: ${buffer_size2}`);
     if (results2.length !== 10000) throw new Error(`${results2.length}`);
-
-    const buffer_size3 = 4*1024;
-    const start3 = (new Date()).getTime() / 1000;
-    const eventLog3 = new EventLog(filename, buffer_size3);
-    const results3 = eventLog3.search(["aaaa"], 10000000, 1);
-    const end3 = (new Date()).getTime() / 1000;
-    console.log(`time: ${end3 - start3} found: ${results3.length} buffer size: ${buffer_size3}`);
-    if (results3.length !== 10000000) throw new Error(`${results3.length}`);
 };
 
 program
