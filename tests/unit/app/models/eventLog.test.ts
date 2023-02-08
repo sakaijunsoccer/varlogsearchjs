@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import fs from 'fs'
 import  EventLog  from '../../../../src/models/eventLog'
 

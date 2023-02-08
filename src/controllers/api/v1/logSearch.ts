@@ -1,3 +1,4 @@
+
 import * as express from "express";
 import fs from 'fs';
 import EventLog from "../../../models/eventLog"
@@ -18,6 +19,47 @@ interface ResonseJson{
 }
 
 export const registor = ( app: express.Application ) => {
+    /**
+     * @swagger
+     * /api/v1/search:
+     *   get:
+     *     summary: Keyword search for files in /var/log
+     *     description: Search files in /var/log by keyword and return log lines found, starting with the most recent
+     *     parameters:
+     *       - in: query
+     *         name: filename
+     *         required: true
+     *         description: filename to search
+     *         schema:
+     *           type: string
+     *       - in: query
+     *         name: keywords
+     *         required: true
+     *         description: Keywords to search for, separated by commas ex) test,test
+     *         schema:
+     *           type: string
+     *       - in: query
+     *         name: limit
+     *         required: false
+     *         description: Limit number of loglines found in search. Default is 5.
+     *         schema:
+     *           type: integer
+     *     responses:
+     *       200:
+     *         description: A list of log.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 events:
+     *                   type: array
+     *                   items:
+     *                     log:
+     *                       type: string
+     *                       description: log line
+     *                       example: "log 1"
+     */
     app.get( "/api/v1/search", async ( request: express.Request<unknown, unknown, unknown, ReqQuery>, response: express.Response) => {
         const filename: string = request.query?.filename ?? '';
         if (!filename) {
@@ -39,7 +81,7 @@ export const registor = ( app: express.Application ) => {
         
         const fullFilePath = path.join(pathVarLog, filename);
         if (!fs.existsSync(fullFilePath)) {
-            console.warn({
+            console.debug({
                 "action": "/api/v1/search",
                 "filename": filename,
                 "keywords": keywords,

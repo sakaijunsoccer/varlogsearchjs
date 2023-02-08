@@ -1,4 +1,4 @@
-import fs from 'fs';
+/* eslint-env jest */
 import path from "path"
 
 const request = require("supertest");
