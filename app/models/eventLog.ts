@@ -2,6 +2,7 @@ import fs from 'fs';
 
 const defaultBufferSize = 16;
 const defaultFindEventNum = 5;
+const defaultTimeOut = 5;
 
 export default class EventLog {
     readonly filename: string; 
@@ -12,6 +13,7 @@ export default class EventLog {
     private buffer: string;
     public matchLine: string[];
     public bufferSize: number;
+    public isTimeout: boolean;
     
     constructor(filename: string, bufferSize: number=defaultBufferSize) {
         this.filename = filename;
@@ -22,6 +24,7 @@ export default class EventLog {
         this.matchLine = [];
         this.buffer = "";
         this.bufferSize = bufferSize;
+        this.isTimeout = false;
     }
 
     get pos(): number {
@@ -70,12 +73,22 @@ export default class EventLog {
         return true;
     }
 
-    search(keyWords: string[], limit: number = defaultFindEventNum): (string[]) {
+    search(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): (string[]) {
         // TODO (sakaijunsoccer) Implement AND search with mulitple keywords. Use one keyword for now.
         const keyWord = keyWords[0].trim();
         const lenKeyWord = keyWord.length;
         const lastCharOfKeyword = keyWord.charAt(lenKeyWord-1);
+        
+        // TODO (sakaijunsoccer) Use SQS kind of async tasks with timeout
+        const now = function(): number {return (new Date()).getTime()}
+        const end = (new Date()).getTime() + (timeout * 1000);
         while (this.matchLine.length < limit){
+            if (now() >= end){
+                console.warn("timeout")
+                this.isTimeout = true;
+                return this.matchLine
+            } 
+
             if (this.pos == 0) {
                 if (!this.readBuffer()){
                     return this.matchLine;

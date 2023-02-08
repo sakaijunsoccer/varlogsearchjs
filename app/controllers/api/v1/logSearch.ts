@@ -11,6 +11,11 @@ interface ReqQuery {
     limit: number
 }
 
+interface ResonseJson{
+    events: string[]
+    errorMessage?: string
+}
+
 export const registor = ( app: express.Application ) => {
     app.get( "/api/v1/search", async ( request: express.Request<unknown, unknown, unknown, ReqQuery>, response: express.Response) => {
         const filename: string = request.query?.filename ?? '';
@@ -33,7 +38,8 @@ export const registor = ( app: express.Application ) => {
         
         const fullFilePath = path.join(pathVarLog, filename);
         const eventLog = new EventLog(fullFilePath);
-        const events = await eventLog.search(keywordsList, limit)
+        const events = eventLog.search(keywordsList, limit)
+        const isTimeout= eventLog.isTimeout
 
         console.log({
             "action": "/api/v1/search",
@@ -41,9 +47,14 @@ export const registor = ( app: express.Application ) => {
             "keywords": keywords,
             "limit": limit,
             "events": events,
+            "isTimeout": isTimeout,
         })
 
-        response.json({ events: events})
+        const responseJson: ResonseJson = { events: events}
+        if (isTimeout){
+            responseJson['errorMessage'] = 'timeout'
+        }
+        response.json(responseJson)
 
     });
 };
