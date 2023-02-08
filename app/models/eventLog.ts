@@ -17,14 +17,22 @@ export default class EventLog {
     
     constructor(filename: string, bufferSize: number=defaultBufferSize) {
         this.filename = filename;
+        this.fileDiscriptor = fs.openSync(this.filename, 'r');
         this.stat = fs.statSync(this.filename);
         this.offset = this.stat.size;
         this.cousor = this.offset;
-        this.fileDiscriptor = fs.openSync(this.filename, 'r');
         this.matchLine = [];
         this.buffer = "";
         this.bufferSize = bufferSize;
         this.isTimeout = false;
+    }
+
+    init () {
+        this.isTimeout = false
+        this.matchLine = []
+        this.buffer = ""
+        this.offset = this.stat.size;
+        this.cousor = this.offset;
     }
 
     get pos(): number {
@@ -94,6 +102,8 @@ export default class EventLog {
         // TODO (sakaijunsoccer) Use SQS kind of async tasks with timeout
         const now = function(): number {return (new Date()).getTime()}
         const end = (new Date()).getTime() + (timeout * 1000);
+        this.isTimeout = false;
+
         while (this.matchLine.length < limit){
             if (now() >= end){
                 this.isTimeout = true;
@@ -165,6 +175,13 @@ export default class EventLog {
             }
         }
         return this.matchLine
+    }
+
+    find_event(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): [string[], boolean] {
+        const matchLine = this.search(keyWords, limit, timeout)
+        const isTimeout = this.isTimeout
+        this.init()
+        return [matchLine , isTimeout]
     }
 
 }

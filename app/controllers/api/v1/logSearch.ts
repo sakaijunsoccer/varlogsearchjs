@@ -1,4 +1,5 @@
 import * as express from "express";
+import fs from 'fs';
 import EventLog from "../../../models/eventLog"
 import path from "path"
 
@@ -20,11 +21,11 @@ export const registor = ( app: express.Application ) => {
     app.get( "/api/v1/search", async ( request: express.Request<unknown, unknown, unknown, ReqQuery>, response: express.Response) => {
         const filename: string = request.query?.filename ?? '';
         if (!filename) {
-            response.json({errorMessage: "filename is required"})
+            return response.status(400).send({errorMessage: "filename is required"})
         }
         const keywords: string = request.query?.keywords ?? '';
         if (!keywords) {
-            response.json({errorMessage: "keywords is required"})
+            return response.status(400).send({errorMessage: "keywords is required"})
         }
         const keywordsList = keywords.split(',')
         const limit: number = request.query?.limit ?? defaultSearchLogLine;
@@ -37,9 +38,19 @@ export const registor = ( app: express.Application ) => {
         })
         
         const fullFilePath = path.join(pathVarLog, filename);
+        if (!fs.existsSync(fullFilePath)) {
+            console.warn({
+                "action": "/api/v1/search",
+                "filename": filename,
+                "keywords": keywords,
+                "limit": limit,
+                "status": "no_file"
+            })
+            return response.status(400).send({errorMessage: `${filename} does not exist`})
+        }
+
         const eventLog = new EventLog(fullFilePath);
-        const events = eventLog.search(keywordsList, limit)
-        const isTimeout = eventLog.isTimeout
+        const [events, isTimeout] = eventLog.find_event(keywordsList, limit)
 
         console.log({
             "action": "/api/v1/search",
