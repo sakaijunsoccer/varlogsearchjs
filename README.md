@@ -44,3 +44,7 @@ npx ts-node bin/benchmark.ts
 ```
 npx eslint .
 ```
+
+#### Tools
+Example of postman config for using API
+https://github.com/sakaijunsoccer/varlogsearchjs/blob/main/tools/varlogsearch.postman_collection.json
