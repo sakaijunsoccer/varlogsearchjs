@@ -1,4 +1,5 @@
 # VarLogSearchJs
+This is a demonstration server with the concept of specifying logs in /var/log and returning log lines found using search keywords in a list starting with the latest.
 
 ## QuickStart
 
@@ -11,29 +12,32 @@ $ nvm install 18.12.1
 $ npm --version
 8.19.2
 ```
-Run local
-```
-npm run dev
-```
-
 #### Install package
 ```
 $ npm install
 ```
 
-#### Test
+#### Run local
 ```
-npm test
+$ npm start
 ```
 
-#### Run
+## How to develop
+
+#### Run local
 ```
-npm start
+npm run dev
+```
+
+#### Run test
+```
+npm run build
+npm test
 ```
 
 #### Run benchmark
 ```
-npx ts-node tools/benchmark.ts
+npx ts-node bin/benchmark.ts
 ```
 
 #### Help to reformant code

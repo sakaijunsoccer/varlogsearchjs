@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import * as logSearchRegister from './app/controllers/api/v1/logSearch';
+import * as logSearchRegister from './controllers/api/v1/logSearch';
 import app from './app'
 
 dotenv.config();
