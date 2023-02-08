@@ -39,7 +39,7 @@ export const registor = ( app: express.Application ) => {
         const fullFilePath = path.join(pathVarLog, filename);
         const eventLog = new EventLog(fullFilePath);
         const events = eventLog.search(keywordsList, limit)
-        const isTimeout= eventLog.isTimeout
+        const isTimeout = eventLog.isTimeout
 
         console.log({
             "action": "/api/v1/search",

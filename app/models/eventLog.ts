@@ -61,6 +61,7 @@ export default class EventLog {
     }
 
     findAndMoveLineBreakOrStart(): (boolean) {
+        /* Backword until newline character is found, read more buffer if buffer is exhausted */
         while (this.getChar() != '\n'){
             if (this.pos === 0) {
                 if (this.offset === 0) {
@@ -74,6 +75,17 @@ export default class EventLog {
     }
 
     search(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): (string[]) {
+        /**
+         * Read from the back of the log file for the buffer size, and if there is a log line that hits 
+         * the search keyword, return it from the latest one. Also, set a timeout until the searched log line 
+         * is found, and if it times out, only the searched line are returned.
+         * 
+         * @param keyWords - An array of search characters separated by commas. ex) apple,banna
+         * @param limit - limit on how many retrieved lines to return
+         * @param timeout - The number of seconds to timeout. default is `defaultTimeOut` seconds
+         * @returns Returns the loglines with the searched word in an array, starting with the most recent.
+         */
+
         // TODO (sakaijunsoccer) Implement AND search with mulitple keywords. Use one keyword for now.
         const keyWord = keyWords[0].trim();
         const lenKeyWord = keyWord.length;
@@ -84,27 +96,34 @@ export default class EventLog {
         const end = (new Date()).getTime() + (timeout * 1000);
         while (this.matchLine.length < limit){
             if (now() >= end){
-                console.warn("timeout")
                 this.isTimeout = true;
+                console.warn("timeout")
                 return this.matchLine
             } 
 
+            // Exit if reading reaches the beginning of the file
             if (this.pos == 0) {
                 if (!this.readBuffer()){
                     return this.matchLine;
                 }
             }
+
+            // Backword until the end of the search string is found.
             let isMatchLastKeyWordChar = false;
-            while (this.pos >0){
+            while (this.pos > 0){
                 this.moveCursor(-1);
                 const c = this.getChar();
                 if (c === '\n') {
+                    // If the end of the search string is not found until the newline, 
+                    // the buffer after the newline is not needed and delete it.
                     this.trim();
                 }else if (c === lastCharOfKeyword) {
                     isMatchLastKeyWordChar = true;
                     break
                 }
 
+                // Exit if reading reaches the beginning of the file
+                // if not, read more buffers
                 if (this.pos === 0) {
                     if (this.offset == 0) {
                         return this.matchLine;
@@ -113,16 +132,20 @@ export default class EventLog {
                 }
             }
 
+            // Read more buffer if remaining buffer is shorter than search word
             if (this.pos < lenKeyWord) {
                 this.readBuffer();
             }
         
             if (isMatchLastKeyWordChar){
+                // Determine if find from the end of the search character to the length of the search character
                 const backLenKeyword = this.pos - (lenKeyWord-1);
                 const isMatchWord = this.buffer.indexOf(keyWord, backLenKeyword) === backLenKeyword;
                 if (isMatchWord) {
+                    // If the search string is found, backword the search string length
                     this.moveCursor(-(lenKeyWord-1));
 
+                    // Search word found, save logline
                     let line = ""
                     if (this.findAndMoveLineBreakOrStart()) {
                         line = this.buffer.slice(this.pos+1);
