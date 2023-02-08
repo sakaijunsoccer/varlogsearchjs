@@ -27,7 +27,7 @@ export default class EventLog {
         this.isTimeout = false;
     }
 
-    init () {
+    initialize() {
         this.isTimeout = false
         this.matchLine = []
         this.buffer = ""
@@ -180,7 +180,7 @@ export default class EventLog {
     find_event(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): [string[], boolean] {
         const matchLine = this.search(keyWords, limit, timeout)
         const isTimeout = this.isTimeout
-        this.init()
+        this.initialize()
         return [matchLine , isTimeout]
     }
 
