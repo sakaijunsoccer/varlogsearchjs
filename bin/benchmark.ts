@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import EventLog from "../app/models/eventLog"
+import EventLog from "../src/app/models/eventLog"
 
 const benchmarkEventLog = (filename: string, keyword: string, limit: number) => {
 

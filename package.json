@@ -2,12 +2,12 @@
   "name": "typescript",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
     "test": "jest",
     "build": "npx tsc",
-    "start": "node server.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q server.ts\""
+    "start": "node ./src/server.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./src/server.ts\""
   },
   "keywords": [],
   "author": "",

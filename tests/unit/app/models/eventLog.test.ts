@@ -1,5 +1,5 @@
 import fs from 'fs'
-import  EventLog  from '../../../app/models/eventLog'
+import  EventLog  from '../../../../src/app/models/eventLog'
 
 const tmp = require('tmp');
 let tempObj: any
