@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const defaultBufferSize = 16;
+const defaultBufferSize = 16 * 1024;
 const defaultFindEventNum = 5;
 const defaultTimeOut = 5;
 
