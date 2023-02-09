@@ -84,4 +84,4 @@ Postman config is [here](tools/varlogsearch.postman_collection.json "s/varlogsea
 
 ## Frontend
 The basic UI is in the repository below, so if you want to access this server from the UI, please set up a front-end server according to the README in the repository below.
-[SearchHead](https://github.com/sakaijunsoccer/searchhead)
+[VarLogSearchFrontEnd](https://github.com/sakaijunsoccer/varlogsearchfrontend)

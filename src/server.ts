@@ -6,15 +6,16 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 
 import app from './app'
+dotenv.config();
+const port = process.env.PORT;
+const enableCluster = process.env.ENABLE_CLUSTER == "true";
 
 const numCPUs = os.cpus().length;
-if (cluster.isPrimary) {
+if (enableCluster && cluster.isPrimary) {
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
 } else {
-  dotenv.config();
-  const port = process.env.PORT;
 
   const options = {
     swaggerDefinition: {
