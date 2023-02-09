@@ -68,8 +68,10 @@ export default class EventLog {
         return true;
     }
 
+    /**
+     * Backword until newline character is found, read more buffer if buffer is exhausted 
+     */
     findAndMoveLineBreakOrStart(): (boolean) {
-        /* Backword until newline character is found, read more buffer if buffer is exhausted */
         while (this.getChar() != '\n'){
             if (this.pos === 0) {
                 if (this.offset === 0) {
@@ -82,18 +84,17 @@ export default class EventLog {
         return true;
     }
 
+    /**
+     * Read from the back of the log file for the buffer size, and if there is a log line that hits 
+     * the search keyword, return it from the latest one. Also, set a timeout until the searched log line 
+     * is found, and if it times out, only the searched line are returned.
+     * 
+     * @param keyWords - An array of search characters separated by commas. ex) apple,banna
+     * @param limit - limit on how many retrieved lines to return
+     * @param timeout - The number of seconds to timeout. default is `defaultTimeOut` seconds
+     * @returns Returns the loglines with the searched word in an array, starting with the most recent.
+     */
     search(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): (string[]) {
-        /**
-         * Read from the back of the log file for the buffer size, and if there is a log line that hits 
-         * the search keyword, return it from the latest one. Also, set a timeout until the searched log line 
-         * is found, and if it times out, only the searched line are returned.
-         * 
-         * @param keyWords - An array of search characters separated by commas. ex) apple,banna
-         * @param limit - limit on how many retrieved lines to return
-         * @param timeout - The number of seconds to timeout. default is `defaultTimeOut` seconds
-         * @returns Returns the loglines with the searched word in an array, starting with the most recent.
-         */
-
         // TODO (sakaijunsoccer) Implement AND search with mulitple keywords. Use one keyword for now.
         const keyWord = keyWords[0].trim();
         const lenKeyWord = keyWord.length;
