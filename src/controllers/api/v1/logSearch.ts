@@ -92,8 +92,9 @@ export const registor = ( app: express.Application ) => {
             return response.status(400).send({errorMessage: `${filename} does not exist`})
         }
 
+        // TODO (sakaijunsoccer) Use queing system to execute CPU bound
         const eventLog = new EventLog(fullFilePath);
-        const [events, isTimeout] = eventLog.find_event(keywordsList, limit)
+        const [events, isTimeout] = eventLog.findEvent(keywordsList, limit)
 
         console.log({
             "action": "/api/v1/search",

@@ -100,7 +100,8 @@ export default class EventLog {
         const lenKeyWord = keyWord.length;
         const lastCharOfKeyword = keyWord.charAt(lenKeyWord-1);
         
-        // TODO (sakaijunsoccer) Use SQS kind of async tasks with timeout
+        // TODO (sakaijunsoccer) Since javascript is single-threaded, 
+        // use other queuing systems such as AWS SQS or wokrer thread to set timeout.
         const now = function(): number {return (new Date()).getTime()}
         const end = (new Date()).getTime() + (timeout * 1000);
         this.isTimeout = false;
@@ -178,7 +179,7 @@ export default class EventLog {
         return this.matchLine
     }
 
-    find_event(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): [string[], boolean] {
+    findEvent(keyWords: string[], limit: number = defaultFindEventNum, timeout = defaultTimeOut): [string[], boolean] {
         const matchLine = this.search(keyWords, limit, timeout)
         const isTimeout = this.isTimeout
         this.initialize()
