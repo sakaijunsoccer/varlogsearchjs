@@ -80,7 +80,7 @@ npx eslint .
 http://localhost:8080/docs/api/v1/
 
 #### Example of postman config for using API
-https://github.com/sakaijunsoccer/varlogsearchjs/blob/main/tools/varlogsearch.postman_collection.json
+Postman config is [here](tools/varlogsearch.postman_collection.json "s/varlogsearch.postman_collection.json")
 
 ## Frontend
 The basic UI is in the repository below, so if you want to access this server from the UI, please set up a front-end server according to the README in the repository below.
