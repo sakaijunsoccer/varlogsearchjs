@@ -19,10 +19,10 @@ Install required packages
 $ npm install
 ```
 
-##### Configure settings file
+#### Configure settings file
 If necessary, change the port number etc. in the .env configuration file.
 ```
-vim .env
+$ vim .env
 PORT=8080
 ```
 
