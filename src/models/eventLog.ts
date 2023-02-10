@@ -40,11 +40,11 @@ export default class EventLog {
         return this.buffer.charAt(this.pos);
     }
 
-    moveCursor(num = -1): void{
+    moveCursor(num = -1): void {
         this.cousor += num
     }
 
-    trim(): void{
+    trim(): void {
         this.buffer = this.buffer.slice(0, this.pos+1)
     }
 
@@ -106,7 +106,7 @@ export default class EventLog {
         while (this.matchLine.length < limit){
             if (now() >= end){
                 this.isTimeout = true;
-                console.warn("timeout")
+                console.warn({"action": "search", "status": "timeout"})
                 return this.matchLine
             } 
 
