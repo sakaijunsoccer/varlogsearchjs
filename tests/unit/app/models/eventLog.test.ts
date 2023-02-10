@@ -6,6 +6,7 @@ import  EventLog  from '../../../../src/models/eventLog'
 
 const tmp = require('tmp');
 
+// TODO (sakaijunsoccer) Figure out best way to share data each test like pthon setUp method.
 let tempObj: any
 
 beforeEach(() => {
