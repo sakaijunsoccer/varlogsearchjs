@@ -15,3 +15,5 @@ clean:
 	find ./src -name '*.js.map' -exec rm {} \;
 	find ./tests -name '*.js' -exec rm {} \;
 	find ./tests -name '*.js.map' -exec rm {} \;
+	find ./bin -name '*.js' -exec rm {} \;
+	find ./bin -name '*.js.map' -exec rm {} \;
