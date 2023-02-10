@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { EOL } from 'node:os'
 
 const defaultBufferSize = 16 * 1024;
 const defaultFindEventNum = 5;
@@ -19,12 +20,8 @@ export default class EventLog {
         this.filename = filename;
         this.fileDiscriptor = fs.openSync(this.filename, 'r');
         this.stat = fs.statSync(this.filename);
-        this.offset = this.stat.size;
-        this.cousor = this.offset;
-        this.matchLine = [];
-        this.buffer = "";
         this.bufferSize = bufferSize;
-        this.isTimeout = false;
+        this.initialize()
     }
 
     initialize() {
@@ -57,7 +54,7 @@ export default class EventLog {
             num = this.offset;
         }
         
-        if (num == 0) {
+        if (num <= 0) {
             return false
         }
         
@@ -72,9 +69,9 @@ export default class EventLog {
      * Backword until newline character is found, read more buffer if buffer is exhausted 
      */
     findAndMoveLineBreakOrStart(): (boolean) {
-        while (this.getChar() != '\n'){
-            if (this.pos === 0) {
-                if (this.offset === 0) {
+        while (this.getChar() != EOL){
+            if (this.pos <= 0) {
+                if (this.offset <= 0) {
                     return false;
                 }
                 this.readBuffer();
@@ -114,7 +111,7 @@ export default class EventLog {
             } 
 
             // Exit if reading reaches the beginning of the file
-            if (this.pos == 0) {
+            if (this.pos <= 0) {
                 if (!this.readBuffer()){
                     return this.matchLine;
                 }
@@ -125,7 +122,7 @@ export default class EventLog {
             while (this.pos > 0){
                 this.moveCursor(-1);
                 const c = this.getChar();
-                if (c === '\n') {
+                if (c === EOL) {
                     // If the end of the search string is not found until the newline, 
                     // the buffer after the newline is not needed and delete it.
                     this.trim();
@@ -136,8 +133,8 @@ export default class EventLog {
 
                 // Exit if reading reaches the beginning of the file
                 // if not, read more buffers
-                if (this.pos === 0) {
-                    if (this.offset == 0) {
+                if (this.pos <= 0) {
+                    if (this.offset <= 0) {
                         return this.matchLine;
                     }
                     this.readBuffer();
@@ -165,7 +162,7 @@ export default class EventLog {
                         line = this.buffer;
                     }
 
-                    if (line.charAt(line.length-1) == "\n") {
+                    if (line.charAt(line.length-1) == EOL) {
                         line = line.slice(0,-1);
                     }
                     

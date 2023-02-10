@@ -1,8 +1,11 @@
 /* eslint-env jest */
+/* eslint @typescript-eslint/no-var-requires: "off" */
+/* eslint @typescript-eslint/no-explicit-any: "off" */
 import fs from 'fs'
 import  EventLog  from '../../../../src/models/eventLog'
 
 const tmp = require('tmp');
+
 let tempObj: any
 
 beforeEach(() => {
