@@ -12,3 +12,6 @@ eslint:
 
 clean:
 	find ./src -name '*.js' -exec rm {} \;
+	find ./src -name '*.js.map' -exec rm {} \;
+	find ./tests -name '*.js' -exec rm {} \;
+	find ./tests -name '*.js.map' -exec rm {} \;
