@@ -89,7 +89,7 @@ export default class EventLog {
             line = this.buffer;
         }
 
-        if (line.charAt(line.length-1) == EOL) {
+        if (line && line.charAt(line.length-1) == EOL) {
             line = line.slice(0,-1);
         }
         
