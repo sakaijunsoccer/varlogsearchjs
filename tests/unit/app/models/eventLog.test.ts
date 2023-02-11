@@ -112,11 +112,11 @@ test("EventLog.search word between buffer", () => {
     expect(events).toStrictEqual(['123456789']);
 });
 
-test("EventLog.search break line", () => {
-    fs.writeSync(tempObj.fd, 'some test 1\n');
+test("EventLog.search with empty", () => {
+    fs.writeSync(tempObj.fd, 'some test 1\nsome test 2\n');
     const eventLog = new EventLog(tempObj.name)
-    const events = eventLog.search(["\n"])
-    expect(events).toStrictEqual([]);
+    const events = eventLog.search([""])
+    expect(events).toStrictEqual(["some test 2", "some test 1"]);
 });
 
 test("EventLog.search does not match", () => {
@@ -131,4 +131,11 @@ test("EventLog.search empty", () => {
     const eventLog = new EventLog(tempObj.name)
     const events = eventLog.search(["test"])
     expect(events).toStrictEqual([]);
+});
+
+test("EventLog.search line break", () => {
+    fs.writeSync(tempObj.fd, 'some test 1');
+    const eventLog = new EventLog(tempObj.name)
+    const events = eventLog.search(["\n"])
+    expect(events).toStrictEqual(['some test 1']);
 });

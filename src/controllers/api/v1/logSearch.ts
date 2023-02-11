@@ -70,7 +70,10 @@ export const registor = ( app: express.Application ) => {
         if (!keywords) {
             return response.status(400).send({errorMessage: "keywords is required"})
         }
-        const keywordsList = keywords.split(',')
+        let keywordsList: string[] = []
+        if (keywords !== "''"  ){
+            keywordsList = keywords.split(',')
+        }
         const limit: number = request.query?.limit ?? defaultSearchLogLine;
 
         console.log({
@@ -79,6 +82,7 @@ export const registor = ( app: express.Application ) => {
             "keywords": keywords,
             "limit": limit,
         })
+        
         
         const fullFilePath = path.join(pathVarLog, filename);
         if (!fs.existsSync(fullFilePath)) {
