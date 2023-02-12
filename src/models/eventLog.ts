@@ -98,6 +98,24 @@ export default class EventLog {
         }
     }
 
+    get isBegin(): boolean {
+        return (this.pos <= 0 && this.offset <= 0)
+    }
+
+    allLine(limit: number): string[]{
+        while (this.matchLine.length < limit){
+            this.moveCursor(-1)
+            this.saveLine()
+            this.trim();
+            if (this.pos <= 0) {
+                if (!this.readBuffer()){
+                    return this.matchLine;
+                }
+            }
+        } 
+        return this.matchLine
+    }
+
     /**
      * Read from the back of the log file for the buffer size, and if there is a log line that hits 
      * the search keyword, return it from the latest one. Also, set a timeout until the searched log line 
@@ -112,13 +130,16 @@ export default class EventLog {
         // TODO (sakaijunsoccer) Implement AND search with mulitple keywords. Use one keyword for now.
         const keyWord = keyWords[0]?.trim();
         const lenKeyWord = keyWord?.length ?? 0;
-        const lastCharOfKeyword = (keyWord) ? keyWord.charAt(lenKeyWord-1) : '';
+        if (lenKeyWord == 0) {
+            return this.allLine(limit)
+        }
+        const lastCharOfKeyword = keyWord.charAt(lenKeyWord-1)
+
         // TODO (sakaijunsoccer) Since javascript is single-threaded, 
         // use other queuing systems such as AWS SQS or wokrer thread to set timeout.
         const now = function(): number {return (new Date()).getTime()}
         const end = (new Date()).getTime() + (timeout * 1000);
         this.isTimeout = false;
-
         while (this.matchLine.length < limit){
             if (now() >= end){
                 this.isTimeout = true;
@@ -126,11 +147,8 @@ export default class EventLog {
                 return this.matchLine
             } 
 
-            // Exit if reading reaches the beginning of the file
-            if (this.pos <= 0) {
-                if (!this.readBuffer()){
-                    return this.matchLine;
-                }
+            if (this.isBegin) {
+                return this.matchLine;
             }
             
             // Backword until the end of the search string is found.
@@ -138,13 +156,7 @@ export default class EventLog {
             while (this.pos > 0){
                 this.moveCursor(-1);
 
-                if (lenKeyWord === 0) {
-                    this.saveLine()
-                    this.trim();
-                    break
-                }
-
-                 const c = this.getChar();
+                const c = this.getChar();
                 if (c === EOL) {
                     // If the end of the search string is not found until the newline, 
                     // the buffer after the newline is not needed and delete it.
@@ -176,8 +188,6 @@ export default class EventLog {
                 if (isMatchWord) {
                     // If the search string is found, backword the search string length
                     this.moveCursor(-(lenKeyWord-1));
-
-                    // Search word found, save logline
                     this.saveLine()
                     this.trim();
                 }
