@@ -44,6 +44,10 @@ export default class EventLog {
         this.cousor += num
     }
 
+    get isBegin(): boolean {
+        return (this.pos <= 0 && this.offset <= 0)
+    }
+
     trim(): void {
         this.buffer = this.buffer.slice(0, this.pos+1)
     }
@@ -96,10 +100,6 @@ export default class EventLog {
         if (line !== "") {
             this.matchLine.push(line);
         }
-    }
-
-    get isBegin(): boolean {
-        return (this.pos <= 0 && this.offset <= 0)
     }
 
     allLine(limit: number): string[]{
