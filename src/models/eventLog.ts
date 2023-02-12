@@ -22,6 +22,7 @@ export default class EventLog {
         this.stat = fs.statSync(this.filename);
         this.bufferSize = bufferSize;
         this.initialize()
+        this.readBuffer()
     }
 
     initialize() {
