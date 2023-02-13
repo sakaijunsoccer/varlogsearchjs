@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { EOL } from 'node:os'
+import os from 'os'
 
 const defaultBufferSize = 16 * 1024;
 const defaultFindEventNum = 5;
@@ -74,7 +74,7 @@ export default class EventLog {
      * Backword until newline character is found, read more buffer if buffer is exhausted 
      */
     findAndMoveLineBreakOrStart(): (boolean) {
-        while (this.getChar() != EOL){
+        while (this.getChar() != os.EOL){
             if (this.pos <= 0) {
                 if (this.offset <= 0) {
                     return false;
@@ -94,7 +94,7 @@ export default class EventLog {
             line = this.buffer;
         }
 
-        if (line && line.charAt(line.length-1) == EOL) {
+        if (line && line.charAt(line.length-1) == os.EOL) {
             line = line.slice(0,-1);
         }
         
@@ -158,7 +158,7 @@ export default class EventLog {
                 this.moveCursor(-1);
 
                 const c = this.getChar();
-                if (c === EOL) {
+                if (c === os.EOL) {
                     // If the end of the search string is not found until the newline, 
                     // the buffer after the newline is not needed and delete it.
                     this.trim();
