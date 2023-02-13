@@ -167,14 +167,6 @@ export default class EventLog {
                     break
                 }
    
-                // Exit if reading reaches the beginning of the file
-                // if not, read more buffers
-                if (this.pos <= 0) {
-                    if (this.offset <= 0) {
-                        return this.matchLine;
-                    }
-                    this.readBuffer();
-                }
             }
 
             // Read more buffer if remaining buffer is shorter than search word
