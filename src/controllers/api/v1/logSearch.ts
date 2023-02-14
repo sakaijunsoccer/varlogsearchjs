@@ -83,7 +83,17 @@ export const registor = ( app: express.Application ) => {
             "limit": limit,
         })
         
-        
+        if (filename.search('../')){
+            console.debug({
+                "action": "/api/v1/search",
+                "filename": filename,
+                "keywords": keywords,
+                "limit": limit,
+                "status": "no_change_directory"
+            })
+            return response.status(400).send({errorMessage: `cannot change directory with ../`})
+        }
+
         const fullFilePath = path.join(pathVarLog, filename);
         if (!fs.existsSync(fullFilePath)) {
             console.debug({
@@ -98,7 +108,7 @@ export const registor = ( app: express.Application ) => {
 
         // TODO (sakaijunsoccer) Use queing system to execute CPU bound
         const eventLog = new EventLog(fullFilePath);
-        const [events, isTimeout] = eventLog.findEvent(keywordsList, limit)
+        const [events, isTimeout] = await eventLog.findEvent(keywordsList, limit)
 
         console.log({
             "action": "/api/v1/search",

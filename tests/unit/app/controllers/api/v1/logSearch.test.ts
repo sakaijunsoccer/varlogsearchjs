@@ -45,5 +45,11 @@ describe("Test event search", () => {
     expect(response.statusCode).toBe(400);
   });
 
+  test("It should response 400 does not exist file", async () => {
+    const req = await request(app)
+    const response = await req.get("/api/v1/search?filename=../../etc/password&keywords=test");
+    expect(response.statusCode).toBe(400);
+  });
+
 });
 
