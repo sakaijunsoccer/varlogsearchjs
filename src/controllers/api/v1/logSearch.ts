@@ -83,7 +83,7 @@ export const registor = ( app: express.Application ) => {
             "limit": limit,
         })
         
-        if (filename.search('../')){
+        if (filename.search('../') === 0){
             console.debug({
                 "action": "/api/v1/search",
                 "filename": filename,
