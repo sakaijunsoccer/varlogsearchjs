@@ -108,7 +108,7 @@ export const registor = ( app: express.Application ) => {
 
         // TODO (sakaijunsoccer) Use queing system to execute CPU bound
         const eventLog = new EventLog(fullFilePath);
-        const [events, isTimeout] = await eventLog.findEvent(keywordsList, limit)
+        const [events, isTimeout] = eventLog.findEvent(keywordsList, limit)
 
         console.log({
             "action": "/api/v1/search",
